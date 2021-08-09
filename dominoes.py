@@ -26,6 +26,7 @@ def check(Board, i, j, ori):
         if j<len(Board[i])-1:
             if Board[i][j]=='*' and  Board[i][j+1]=='*':
                 r = True
+    #Vertical
     elif ori==1:
          if i<len(Board)-1:
             if Board[i][j]=='*' and Board[i+1][j]=='*':
@@ -40,6 +41,11 @@ def place_tile(Board, i, j, ori, tile):
         Board[i+1][j] = tile[1]
 
 def create_puzzle(n):
+    """
+    es posible que el algoritmo generador falle y no encuentre un tablero válido
+    Si sucede, retorna falso y no genera ningún archivo de salida
+    """
+
     board = make_board(n+1, n+2)
     tiles = make_tiles(n)
     random.shuffle(tiles)
@@ -58,8 +64,24 @@ def create_puzzle(n):
             solution = solution + [ori]
         else:
             return False
-    print (board)
-    print (solution)
+    toFile("TableroDoble" + str(n), n, board, solution)
+
+def toFile(filename, n, board, solution):    
+    file = open(filename+ ".txt", "w")
+    file.write(str(n) +  "\n")
+    file.write("\n")
+
+    #tablero
+    for fila in board:
+        for e in fila:
+            file.write(str(e) + " ")
+        file.write("\n")
+    file.write("\n")
+            
+    for i in solution:
+        file.write(str(i) + " ")
+    file.write("\n")
+
 
 create_puzzle(10)
 create_puzzle(5)
